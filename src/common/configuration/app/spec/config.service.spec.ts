@@ -16,21 +16,21 @@ describe('App Config Service Test', () => {
 
   test('환경변수로 설정된 SERVER_PORT를 성공적으로 가져오는가', async () => {
     // given
+    const portNumber = parseInt(process.env.SERVER_PORT, 10);
 
     // when
 
     // then
-    expect(appConfigService.port).toEqual(
-      parseInt(process.env.SERVER_PORT, 10),
-    );
+    expect(appConfigService.port).toEqual(portNumber);
   });
 
   test('환경변수로 설정된 NODE_ENV를 성공적으로 가져오는가', async () => {
     // given
+    const nodeEnv = process.env.NODE_ENV;
 
     // when
 
     // then
-    expect(appConfigService.env).toEqual(process.env.NODE_ENV);
+    expect(appConfigService.env).toEqual(nodeEnv);
   });
 });
