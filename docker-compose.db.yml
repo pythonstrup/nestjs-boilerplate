@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+  nest-db:
+    container_name: nest-db
+    image: mysql:8.0
+    restart: always
+    ports:
+      - 3330:3306
+    env_file:
+      - .env.development
+    environment:
+      MYSQL_ROOT_PASSWORD: test
+    volumes:
+      - ~/db:/var/lib/mysql
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    networks:
+      - backbone
+
+  nest-test-db:
+    container_name: nest-test-db
+    image: mysql:8.0
+    restart: always
+    env_file:
+      - .env.test
+    ports:
+      - 3331:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: test
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    networks:
+      - backbone
+
+networks:
+  backbone:
+    name: backbone
+    driver: bridge
