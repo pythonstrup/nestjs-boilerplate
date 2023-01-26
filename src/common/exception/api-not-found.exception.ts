@@ -3,7 +3,7 @@ import { ExceptionMessage } from '@common/util/exception-message';
 import { ExceptionStatus } from '@common/util/exception-status';
 
 export class ApiNotFoundException extends NotFoundException {
-  constructor(message = ExceptionMessage.API_NOT_FOUND) {
+  constructor(message: string = ExceptionMessage.API_NOT_FOUND) {
     super({ status: ExceptionStatus.API_NOT_FOUND, message });
   }
 }
