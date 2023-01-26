@@ -1,4 +1,6 @@
 import { NotFoundException } from '@nestjs/common';
+import { ExceptionMessage } from '@common/util/exception-message';
+import { ExceptionStatus } from '@common/util/exception-status';
 
 export class ApiNotFoundException extends NotFoundException {
   constructor(message = ExceptionMessage.API_NOT_FOUND) {
