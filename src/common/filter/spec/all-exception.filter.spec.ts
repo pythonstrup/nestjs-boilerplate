@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 import { AllExceptionFilter } from '@filter/all-exception.filter';
 import { HttpAdapterHost } from '@nestjs/core';
 import { ApiNotFoundException } from '@exception/api-not-found.exception';
@@ -39,7 +39,7 @@ describe('System header validation service', () => {
 
   beforeEach(async () => {
     jest.clearAllMocks();
-    const module: TestingModule = await Test.createTestingModule({
+    const module = await Test.createTestingModule({
       providers: [
         AllExceptionFilter,
         {
