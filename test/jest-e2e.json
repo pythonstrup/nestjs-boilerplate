@@ -1,4 +1,14 @@
 {
+  "moduleNameMapper": {
+    "^@src/(.*)$": "<rootDir>/../src/$1",
+    "^@common/(.*)$": "<rootDir>/../src/common/$1",
+    "^@middleware/(.*)$": "<rootDir>/../src/common/middleware/$1",
+    "^@filter/(.*)$": "<rootDir>/../src/common/filter/$1",
+    "^@config/(.*)$": "<rootDir>/../src/common/configuration/$1",
+    "^@decorator/(.*)$": "<rootDir>/../src/common/decorator/$1",
+    "^@exception/(.*)$": "<rootDir>/../src/common/exception/$1",
+    "^@app/(.*)$": "<rootDir>/../src/app/$1"
+  },
   "moduleFileExtensions": ["js", "json", "ts"],
   "rootDir": ".",
   "testEnvironment": "node",
