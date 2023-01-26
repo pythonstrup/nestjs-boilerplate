@@ -4,6 +4,6 @@ import { ExceptionStatus } from '@common/util/exception-status';
 
 export class ApiNotFoundException extends NotFoundException {
   constructor(message = ExceptionMessage.API_NOT_FOUND) {
-    super({ status: ExceptionStatus.API_NOT_FOUND }, message);
+    super({ status: ExceptionStatus.API_NOT_FOUND, message });
   }
 }
