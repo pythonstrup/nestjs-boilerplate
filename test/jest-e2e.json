@@ -7,7 +7,7 @@
     "^@config/(.*)$": "<rootDir>/../src/common/configuration/$1",
     "^@decorator/(.*)$": "<rootDir>/../src/common/decorator/$1",
     "^@exception/(.*)$": "<rootDir>/../src/common/exception/$1",
-    "^@app/(.*)$": "<rootDir>/../src/app/$1"
+    "^@domain/(.*)$": "<rootDir>/../src/domain/$1"
   },
   "moduleFileExtensions": ["js", "json", "ts"],
   "rootDir": ".",
