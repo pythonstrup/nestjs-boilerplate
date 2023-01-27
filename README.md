@@ -46,11 +46,12 @@ npm run test:e2e
 - `morgan`: 로그를 간편하게 관리하기 위한 도구: [링크](https://www.npmjs.com/package/morgan)
 
 ```shell
-npm i @nestjs/config
-npm i class-validator
-npm i class-transformer
-npm i typeorm @nestjs/typeorm mysql2 typeorm-naming-strategies
-npm i morgan
+$ npm i @nestjs/config
+$ npm i class-validator
+$ npm i class-transformer
+$ npm i typeorm @nestjs/typeorm mysql2 typeorm-naming-strategies
+$ npm i morgan
+$ npm install --save @nestjs/passport passport passport-local
 ```
 
 ## Dependencies
@@ -58,5 +59,6 @@ npm i morgan
 - `env-cmd`
 
 ```shell
-npm i -D env-cmd 
+$ npm i -D env-cmd 
+$ npm install --save-dev @types/passport-local
 ```
