@@ -1,11 +1,12 @@
 import {
+  ClassSerializerInterceptor,
   INestApplication,
   ValidationError,
   ValidationPipe,
 } from '@nestjs/common';
 import { AppConfigService } from '@config/app/config.service';
 import { AllExceptionFilter } from '@filter/all-exception.filter';
-import { HttpAdapterHost } from '@nestjs/core';
+import { HttpAdapterHost, Reflector } from '@nestjs/core';
 import { BadParameterException } from '@exception/bad-parameter.exception';
 
 export const setNestApp = (app: INestApplication) => {
@@ -29,4 +30,6 @@ export const setNestApp = (app: INestApplication) => {
   );
 
   app.useGlobalFilters(new AllExceptionFilter(app.get(HttpAdapterHost)));
+
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 };
