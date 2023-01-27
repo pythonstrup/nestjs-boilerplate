@@ -11,6 +11,7 @@ import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
 import { ExceptionMessage } from '@common/util/exception-message';
 import { ExceptionStatus } from '@common/util/exception-status';
+import { DataSource } from 'typeorm';
 
 @Controller('/test')
 class TestController {
@@ -25,6 +26,7 @@ class TestController {
 
 describe('All Exception Filter e2e Test', () => {
   let app: INestApplication;
+  let dataSource: DataSource;
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
@@ -34,7 +36,18 @@ describe('All Exception Filter e2e Test', () => {
 
     app = module.createNestApplication();
     setNestApp(app);
+
+    dataSource = app.get(DataSource);
+
     await app.init();
+  });
+
+  afterEach(async () => {
+    await dataSource.synchronize();
+  });
+
+  afterAll(async () => {
+    await dataSource.destroy();
   });
 
   describe('API NOT FOUND Exception', () => {
