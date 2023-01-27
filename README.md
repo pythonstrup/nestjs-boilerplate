@@ -52,6 +52,7 @@ $ npm i class-transformer
 $ npm i typeorm @nestjs/typeorm mysql2 typeorm-naming-strategies
 $ npm i morgan
 $ npm install --save @nestjs/passport passport passport-local
+$ npm install --save @nestjs/jwt passport-jwt
 ```
 
 ## Dependencies
@@ -61,4 +62,5 @@ $ npm install --save @nestjs/passport passport passport-local
 ```shell
 $ npm i -D env-cmd 
 $ npm install --save-dev @types/passport-local
+$ npm install --save-dev @types/passport-jwt
 ```
