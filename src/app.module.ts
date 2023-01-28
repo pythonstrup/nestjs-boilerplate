@@ -7,9 +7,29 @@ import { ApiSuccessLoggerMiddleware } from '@middleware/api-success-logger.middl
 import { AppConfigService } from '@config/app/config.service';
 import { ApiExceptionLoggerMiddleware } from '@middleware/api-exception-logger.middleware';
 import { UserModule } from '@domain/user/user.module';
+import { AuthModule } from '@domain/auth/auth.module';
+import { JwtModule } from '@nestjs/jwt';
+import { JwtConfigModule } from '@config/jwt/config.module';
+import { JwtConfigService } from '@config/jwt/config.service';
 
 @Module({
-  imports: [AppConfigModule, DatabaseModule, UserModule],
+  imports: [
+    AppConfigModule,
+    DatabaseModule,
+    UserModule,
+    AuthModule,
+    UserModule,
+    {
+      ...JwtModule.registerAsync({
+        imports: [JwtConfigModule],
+        inject: [JwtConfigService],
+        useFactory: async (jwtConfigService: JwtConfigService) => ({
+          secret: jwtConfigService.secret,
+        }),
+      }),
+      global: true,
+    },
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
