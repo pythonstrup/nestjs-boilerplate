@@ -12,7 +12,7 @@ export class JwtConfig {
   @IsNumber()
   @Type(() => Number)
   @Expose()
-  JWT_ACCESS_TOKEN_EXPIRATION_MINUTES: string;
+  JWT_ACCESS_TOKEN_EXPIRATION_MINUTES: number;
 
   @IsNumber()
   @Type(() => Number)

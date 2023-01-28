@@ -9,7 +9,7 @@ export class AuthConfigService {
     private readonly authConfiguration: ConfigType<typeof authConfig>,
   ) {}
 
-  get salt() {
-    return this.authConfiguration.SALT;
+  get saltRounds() {
+    return this.authConfiguration.SALT_ROUNDS;
   }
 }

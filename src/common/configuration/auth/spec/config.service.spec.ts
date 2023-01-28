@@ -15,11 +15,11 @@ describe('AuthConfigService Unit Test', () => {
 
   test('salt를 가져온다.', async () => {
     // given
-    const salt = process.env.SALT;
+    const saltRounds = parseInt(process.env.SALT_ROUNDS, 10);
 
     // when
 
     // then
-    expect(authConfigService.salt).toEqual(salt);
+    expect(authConfigService.saltRounds).toEqual(saltRounds);
   });
 });
