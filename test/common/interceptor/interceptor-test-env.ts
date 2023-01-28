@@ -1,5 +1,5 @@
 import { Controller, Get, Injectable, Module } from '@nestjs/common';
-import { UserRepository } from '@domain/user/repository/user.repository';
+import { UserRepository } from '@domain/user/user.repository';
 import { UserTestDto } from './user-test.dto';
 import { AppConfigModule } from '@config/app/config.module';
 import { DatabaseModule } from '@config/database/database.module';
