@@ -52,10 +52,11 @@ $ npm i class-validator
 $ npm i class-transformer
 $ npm i typeorm @nestjs/typeorm mysql2 typeorm-naming-strategies
 $ npm i morgan
-$ npm install --save @nestjs/passport passport passport-local
-$ npm install --save @nestjs/jwt passport-jwt
-$ npm install bcrypt
+$ npm i @nestjs/passport passport passport-local
+$ npm i @nestjs/jwt passport-jwt
+$ npm i bcrypt
 $ npm i @js-joda/core
+$ npm i cookie-parser
 ```
 
 ## Dependencies
@@ -63,8 +64,9 @@ $ npm i @js-joda/core
 - `env-cmd`
 
 ```shell
-$ npm i -D env-cmd 
-$ npm install --save-dev @types/passport-local
-$ npm install --save-dev @types/passport-jwt
-$ npm install @types/bcrypt -D
+$ npm i --save-dev env-cmd 
+$ npm i --save-dev @types/passport-local
+$ npm i --save-dev @types/passport-jwt
+$ npm i --save-dev @types/bcrypt 
+$ npm i --save-dev @types/cookie-parser
 ```
