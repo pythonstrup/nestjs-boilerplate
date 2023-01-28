@@ -59,14 +59,18 @@ $ npm i @js-joda/core
 $ npm i cookie-parser
 ```
 
-## Dependencies
+## devDependencies
 
 - `env-cmd`
+- `@types/passport-local`
+- `@types/passport-jwt`
+- `@types/bcrypt`
+- `@types/cookie-parser`
 
 ```shell
 $ npm i --save-dev env-cmd 
 $ npm i --save-dev @types/passport-local
 $ npm i --save-dev @types/passport-jwt
-$ npm i --save-dev @types/bcrypt 
+$ npm i --save-dev @types/bcrypt
 $ npm i --save-dev @types/cookie-parser
 ```
