@@ -24,14 +24,13 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();
 
-    const { authorization } = request.header;
+    const { access_token } = request.cookies;
 
-    if (!authorization) {
+    if (!access_token) {
       throw new NoTokenException();
     }
 
-    const token = authorization.replace('Bearer', '');
-    request.user = this.validateToken(token);
+    request.user = this.validateToken(access_token);
     return true;
   }
 

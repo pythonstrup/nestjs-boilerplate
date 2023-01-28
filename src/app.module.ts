@@ -25,6 +25,10 @@ import { JwtConfigService } from '@config/jwt/config.service';
         inject: [JwtConfigService],
         useFactory: async (jwtConfigService: JwtConfigService) => ({
           secret: jwtConfigService.secret,
+          accessTokenExpirationMinutes:
+            jwtConfigService.accessTokenExpirationMinutes,
+          refreshTokenExpirationDays:
+            jwtConfigService.refreshTokenExpirationDays,
         }),
       }),
       global: true,
