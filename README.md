@@ -44,6 +44,7 @@ npm run test:e2e
 - `mysql2`: promise를 사용하려면 mysql이 아닌 mysql2를 설치해야한다.
 - `typeorm-naming-strategies`
 - `morgan`: 로그를 간편하게 관리하기 위한 도구: [링크](https://www.npmjs.com/package/morgan)
+- `@js-joda/core`
 
 ```shell
 $ npm i @nestjs/config
@@ -53,6 +54,8 @@ $ npm i typeorm @nestjs/typeorm mysql2 typeorm-naming-strategies
 $ npm i morgan
 $ npm install --save @nestjs/passport passport passport-local
 $ npm install --save @nestjs/jwt passport-jwt
+$ npm install bcrypt
+$ npm i @js-joda/core
 ```
 
 ## Dependencies
@@ -63,4 +66,5 @@ $ npm install --save @nestjs/jwt passport-jwt
 $ npm i -D env-cmd 
 $ npm install --save-dev @types/passport-local
 $ npm install --save-dev @types/passport-jwt
+$ npm install @types/bcrypt -D
 ```
