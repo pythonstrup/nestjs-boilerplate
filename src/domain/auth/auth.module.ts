@@ -6,18 +6,12 @@ import { AuthConfigModule } from '@config/auth/config.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtAuthStrategy } from '@domain/auth/strategy/jwt-auth.strategy';
 import { LocalAuthStrategy } from '@domain/auth/strategy/local-auth.strategy';
-import { JwtConfigModule } from '@config/jwt/config.module';
 import { CookieConfigModule } from '@config/cookie/config.module';
+import { RefreshStrategy } from '@domain/auth/strategy/refresh.strategy';
 
 @Module({
-  imports: [
-    UserModule,
-    JwtConfigModule,
-    AuthConfigModule,
-    CookieConfigModule,
-    PassportModule,
-  ],
-  providers: [AuthService, JwtAuthStrategy, LocalAuthStrategy],
+  imports: [UserModule, AuthConfigModule, CookieConfigModule, PassportModule],
+  providers: [AuthService, JwtAuthStrategy, LocalAuthStrategy, RefreshStrategy],
   controllers: [AuthController],
   exports: [AuthService],
 })

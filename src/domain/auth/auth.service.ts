@@ -17,6 +17,8 @@ import { LocalDateTime, ZoneId, ZoneOffset } from '@js-joda/core';
 import { TokenType } from '@domain/auth/type/token-type';
 import { CookieConfigService } from '@config/cookie/config.service';
 import { Constants } from '@common/util/constants';
+import { InvalidRefreshTokenException } from '@domain/auth/exception/invalid-refresh-token.exception';
+import { ExistedTokenException } from '@domain/auth/exception/existed-token.exception';
 
 @Injectable()
 export class AuthService {
@@ -98,10 +100,6 @@ export class AuthService {
     };
   }
 
-  extractRefreshToken(request: Request) {
-    return request.cookies;
-  }
-
   getCookieOptions(tokenExpires: number): CookieOptions {
     return {
       httpOnly: true,
@@ -109,5 +107,45 @@ export class AuthService {
       secure: this.cookieConfigService.secure,
       sameSite: this.cookieConfigService.sameSite,
     };
+  }
+
+  checkAccessToken(request: Request) {
+    const { access_token } = request.cookies;
+
+    if (
+      access_token &&
+      this.jwtService.verify(access_token, {
+        secret: this.jwtConfigService.secret,
+      })
+    ) {
+      throw new ExistedTokenException();
+    }
+  }
+
+  checkRefreshToken(request: Request) {
+    const { refresh_token } = request.cookies;
+
+    if (
+      refresh_token &&
+      this.jwtService.verify(refresh_token, {
+        secret: this.jwtConfigService.secret,
+      })
+    ) {
+      throw new ExistedTokenException();
+    }
+  }
+
+  extractRefreshToken(request: Request) {
+    const { refresh_token } = request.cookies;
+    return refresh_token;
+  }
+
+  validateRefreshToken(refreshToken: string) {
+    const verify = this.jwtService.verify(refreshToken);
+    if (!verify) {
+      throw new InvalidRefreshTokenException();
+    }
+
+    return verify;
   }
 }

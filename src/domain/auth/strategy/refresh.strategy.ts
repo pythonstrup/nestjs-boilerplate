@@ -3,8 +3,9 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { JwtConfigService } from '@config/jwt/config.service';
 import { Request } from 'express';
 import { AuthService } from '@domain/auth/auth.service';
-import { Payload } from '@domain/auth/type/payload.interface';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class RefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
   constructor(
     private readonly jwtConfigService: JwtConfigService,
@@ -22,8 +23,9 @@ export class RefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
     });
   }
 
-  validate(request: Request, payload: Payload) {
+  validate(request: Request) {
+    this.authService.checkAccessToken(request);
     const refreshToken = this.authService.extractRefreshToken(request);
-    return { refreshToken, ...payload };
+    return this.authService.validateRefreshToken(refreshToken);
   }
 }

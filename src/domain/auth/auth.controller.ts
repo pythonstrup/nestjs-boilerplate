@@ -13,6 +13,11 @@ import { SignUpRequest } from '@domain/auth/dto/request/sign-up.request';
 import { ResponseEntity } from '@common/dto/response-entity';
 import { LoginGuardResponse } from '@domain/auth/dto/response/login-guard.response';
 import { Response } from 'express';
+import { RefreshGuard } from '@domain/auth/guard/refresh.guard';
+import { CurrentUser } from '@decorator/current-user.decorator';
+import { User } from '@domain/user/entity/user.entity';
+import { LoginServiceDto } from '@domain/auth/dto/service/login.service-dto';
+import { JwtAuthGuard } from '@domain/auth/guard/jwt-auth.guard';
 
 @Controller('/auth')
 export class AuthController {
@@ -27,7 +32,13 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('/login')
-  public async login(@Req() request, @Res() response: Response) {
+  public async login(
+    @Req() request,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    this.authService.checkAccessToken(request);
+    this.authService.checkRefreshToken(request);
+
     const guardResponse: LoginGuardResponse = request.user;
     const { accessToken, accessTokenExpires } =
       this.authService.issueAccessToken(guardResponse.toService());
@@ -45,7 +56,33 @@ export class AuthController {
         accessToken,
         this.authService.getCookieOptions(accessTokenExpires),
       )
-      .status(HttpStatus.OK)
-      .json(ResponseEntity.OK());
+      .status(HttpStatus.NO_CONTENT);
+  }
+
+  @UseGuards(RefreshGuard)
+  @Post('/refresh')
+  public async refresh(
+    @CurrentUser() user: User,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    const { accessToken, accessTokenExpires } =
+      this.authService.issueAccessToken(LoginServiceDto.of(user));
+
+    response
+      .cookie(
+        'access_token',
+        accessToken,
+        this.authService.getCookieOptions(accessTokenExpires),
+      )
+      .status(HttpStatus.NO_CONTENT);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/logout')
+  public async logout(@Res({ passthrough: true }) response: Response) {
+    response
+      .clearCookie('access_token')
+      .clearCookie('refresh_token')
+      .status(HttpStatus.NO_CONTENT);
   }
 }
