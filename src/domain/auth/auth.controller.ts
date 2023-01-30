@@ -36,8 +36,10 @@ export class AuthController {
     @Req() request,
     @Res({ passthrough: true }) response: Response,
   ) {
-    this.authService.checkAccessToken(request);
-    this.authService.checkRefreshToken(request);
+    const { access_token, refresh_token } = request.cookies;
+    // 만약 토큰이 있다면 로그인을 하지 않도록 한다.
+    this.authService.checkAccessToken(access_token);
+    this.authService.checkRefreshToken(refresh_token);
 
     const guardResponse: LoginGuardResponse = request.user;
     const { accessToken, accessTokenExpires } =

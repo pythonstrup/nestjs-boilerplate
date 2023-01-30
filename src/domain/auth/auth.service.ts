@@ -10,7 +10,7 @@ import { LoginServiceDto } from '@domain/auth/dto/service/login.service-dto';
 import { DuplicatedUsernameException } from '@domain/auth/exception/duplicated-username.exception';
 import { LoginGuardResponse } from '@domain/auth/dto/response/login-guard.response';
 import { JwtService } from '@nestjs/jwt';
-import { CookieOptions, Request } from 'express';
+import { CookieOptions } from 'express';
 import { JwtConfigService } from '@config/jwt/config.service';
 import { toLocaleDateTime } from '@common/util/date-time';
 import { LocalDateTime, ZoneId, ZoneOffset } from '@js-joda/core';
@@ -19,6 +19,7 @@ import { CookieConfigService } from '@config/cookie/config.service';
 import { Constants } from '@common/util/constants';
 import { InvalidRefreshTokenException } from '@domain/auth/exception/invalid-refresh-token.exception';
 import { ExistedTokenException } from '@domain/auth/exception/existed-token.exception';
+import { NoTokenException } from '@domain/auth/exception/no-token.exception';
 
 @Injectable()
 export class AuthService {
@@ -109,12 +110,10 @@ export class AuthService {
     };
   }
 
-  checkAccessToken(request: Request) {
-    const { access_token } = request.cookies;
-
+  checkAccessToken(accessToken: string | undefined) {
     if (
-      access_token &&
-      this.jwtService.verify(access_token, {
+      accessToken &&
+      this.jwtService.verify(accessToken, {
         secret: this.jwtConfigService.secret,
       })
     ) {
@@ -122,12 +121,10 @@ export class AuthService {
     }
   }
 
-  checkRefreshToken(request: Request) {
-    const { refresh_token } = request.cookies;
-
+  checkRefreshToken(refreshToken: string | undefined) {
     if (
-      refresh_token &&
-      this.jwtService.verify(refresh_token, {
+      refreshToken &&
+      this.jwtService.verify(refreshToken, {
         secret: this.jwtConfigService.secret,
       })
     ) {
@@ -135,12 +132,11 @@ export class AuthService {
     }
   }
 
-  extractRefreshToken(request: Request) {
-    const { refresh_token } = request.cookies;
-    return refresh_token;
-  }
+  validateRefreshToken(refreshToken: string | undefined) {
+    if (!refreshToken) {
+      throw new NoTokenException();
+    }
 
-  validateRefreshToken(refreshToken: string) {
     const verify = this.jwtService.verify(refreshToken);
     if (!verify) {
       throw new InvalidRefreshTokenException();
