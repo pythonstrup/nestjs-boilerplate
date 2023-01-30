@@ -80,7 +80,7 @@
       "^@config/(.*)$": "<rootDir>/common/configuration/$1",
       "^@decorator/(.*)$": "<rootDir>/common/decorator/$1",
       "^@exception/(.*)$": "<rootDir>/common/exception/$1",
-      "^@app/(.*)$": "<rootDir>/app/$1",
+      "^@domain/(.*)$": "<rootDir>/domain/$1",
       "^@src/(.*)$": "<rootDir>/$1"
     },
     "moduleFileExtensions": [

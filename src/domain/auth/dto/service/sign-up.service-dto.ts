@@ -5,11 +5,30 @@ export class SignUpServiceDto {
 
   password: string;
 
-  static of({ username, password }: { username: string; password: string }) {
+  static toUser({
+    username,
+    password,
+  }: {
+    username: string;
+    password: string;
+  }) {
     const user = new User();
     user.username = username;
     user.password = password;
     return user;
+  }
+
+  static create({
+    username,
+    password,
+  }: {
+    username: string;
+    password: string;
+  }) {
+    const dto = new SignUpServiceDto();
+    dto.username = username;
+    dto.password = password;
+    return dto;
   }
 
   public async encryptPassword(

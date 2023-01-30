@@ -14,4 +14,17 @@ export class SignUpRequest {
     dto.password = this.password;
     return dto;
   }
+
+  public static create({
+    username,
+    password,
+  }: {
+    username: string;
+    password: string;
+  }) {
+    const dto = new SignUpRequest();
+    dto.username = username;
+    dto.password = password;
+    return dto;
+  }
 }
