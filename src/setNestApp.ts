@@ -3,6 +3,7 @@ import {
   INestApplication,
   ValidationError,
   ValidationPipe,
+  VersioningType,
 } from '@nestjs/common';
 import { AppConfigService } from '@config/app/config.service';
 import { AllExceptionFilter } from '@filter/all-exception.filter';
@@ -18,6 +19,11 @@ export const setNestApp = (app: INestApplication) => {
   app.enableCors({
     origin: appConfigService.isProduction() ? 'https://www.example.com' : true,
     credentials: true,
+  });
+
+  app.enableVersioning({
+    type: VersioningType.URI,
+    defaultVersion: '1',
   });
 
   app.useGlobalPipes(
