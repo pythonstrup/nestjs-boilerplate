@@ -4,8 +4,8 @@ import { HttpStatus, INestApplication } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { User } from '@domain/user/entity/user.entity';
 import * as request from 'supertest';
-import { InterceptorTestEnv } from './interceptor-test-env';
-import { getUserFixture } from '@domain/user/spec/user.fixture';
+import { getUserFixture } from '@domain/user/__test__/user.fixture';
+import { AppModule } from '@src/app.module';
 
 describe('Interceptor e2e Test', () => {
   let app: INestApplication;
@@ -13,7 +13,7 @@ describe('Interceptor e2e Test', () => {
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
-      imports: [InterceptorTestEnv],
+      imports: [AppModule],
     }).compile();
 
     app = module.createNestApplication();
@@ -27,7 +27,7 @@ describe('Interceptor e2e Test', () => {
   });
 
   afterEach(async () => {
-    await dataSource.synchronize();
+    await dataSource.synchronize(true);
   });
 
   afterAll(async () => {
@@ -39,19 +39,26 @@ describe('Interceptor e2e Test', () => {
   // private 멤버 변수가 JSON에서 정상적으로 제외되었는지
   test('유저 정보를 조회할 때 주요 정보들을 숨긴 상태로 반환해준다.', async () => {
     // given
-    const url = '/test/user';
-    const user = getUserFixture({ id: 1, username: 'pythonstrup' });
+    const url = (username: string) => `/v1/user?username=${username}`;
+    const id = 1;
+    const username = 'pythonstrup';
+    const user = getUserFixture({ id, username });
     const userRepository = await dataSource.getRepository(User);
     await userRepository.save(user);
 
     // when
-    const res = await request(app.getHttpServer()).get(url);
+    const res = await request(app.getHttpServer()).get(url(username));
 
     // then
     expect(res.status).toBe(HttpStatus.OK);
 
-    const data = res.body.data;
-    expect(data.username).toBe('pythonstrup');
-    expect(data._username).toBeUndefined();
+    const body = res.body;
+    expect(body.status).toBe('OK');
+    expect(body._status).toBeUndefined();
+    expect(body.message).toBe('');
+    expect(body._message).toBeUndefined();
+    expect(body.data.id).toBe(1);
+    expect(body.data.username).toBe(username);
+    expect(body._data).toBeUndefined();
   });
 });
