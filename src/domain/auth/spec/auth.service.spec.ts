@@ -15,6 +15,7 @@ import { AuthController } from '@domain/auth/auth.controller';
 import * as bcrypt from 'bcrypt';
 import { LoginGuardResponse } from '@domain/auth/dto/response/login-guard.response';
 import { UserNotFoundException } from '@domain/auth/exception/user-not-found.exception';
+import { InvalidPasswordException } from '@domain/auth/exception/invalid-password.exception';
 
 const mockAuthConfigService = {
   saltRounds: 10,
@@ -140,6 +141,29 @@ describe('AuthService Unit Test', () => {
       await expect(async () => {
         return await authService.validateUser(username, password);
       }).rejects.toThrowError(new UserNotFoundException());
+    });
+
+    test('유저는 존재하지만 패스워드가 다른 경우 InvalidPasswordException가 발생한다.', async () => {
+      // given
+      const requestPassword = 'invalid1234';
+      const id = 1;
+      const username = 'test';
+      const password = '1234';
+      const salt = await bcrypt.genSalt(mockAuthConfigService.saltRounds);
+      const encryptedPassword = await bcrypt.hash(password, salt);
+      const user = getUserFixture({
+        id,
+        username,
+        password: encryptedPassword,
+      });
+
+      // when
+      jest.spyOn(userService, 'findUser').mockResolvedValue(user);
+
+      // then
+      await expect(async () => {
+        return authService.validateUser(username, requestPassword);
+      }).rejects.toThrowError(new InvalidPasswordException());
     });
   });
 });
