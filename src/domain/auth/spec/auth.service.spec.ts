@@ -12,6 +12,8 @@ import { UserRepository } from '@domain/user/user.repository';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from '@domain/user/entity/user.entity';
 import { AuthController } from '@domain/auth/auth.controller';
+import * as bcrypt from 'bcrypt';
+import { LoginGuardResponse } from '@domain/auth/dto/response/login-guard.response';
 
 const mockAuthConfigService = {
   saltRounds: 10,
@@ -96,6 +98,33 @@ describe('AuthService Unit Test', () => {
       await expect(async () => {
         return await authService.signUp(request);
       }).rejects.toThrowError(new DuplicatedUsernameException());
+    });
+  });
+
+  describe('AuthService validateUser()', () => {
+    test('정상적으로 실행되는 경우', async () => {
+      // given
+      const id = 1;
+      const username = 'test';
+      const password = '1234';
+      const salt = await bcrypt.genSalt(mockAuthConfigService.saltRounds);
+      const encryptedPassword = await bcrypt.hash(password, salt);
+      const user = getUserFixture({
+        id,
+        username,
+        password: encryptedPassword,
+      });
+
+      // when
+      jest.spyOn(userService, 'findUser').mockResolvedValue(user);
+      const result: LoginGuardResponse = await authService.validateUser(
+        username,
+        password,
+      );
+
+      // then
+      expect(result.id).toBe(id);
+      expect(result.username).toBe(username);
     });
   });
 });
