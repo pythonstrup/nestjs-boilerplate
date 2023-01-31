@@ -43,7 +43,7 @@ describe('All Exception Filter e2e Test', () => {
   });
 
   afterEach(async () => {
-    await dataSource.synchronize();
+    await dataSource.synchronize(true);
   });
 
   afterAll(async () => {
@@ -51,7 +51,7 @@ describe('All Exception Filter e2e Test', () => {
   });
 
   describe('API NOT FOUND Exception', () => {
-    const url = () => `/test/api-not-found`;
+    const url = () => `/v1/test/api-not-found`;
 
     test('없는 API를 요청하면 API NOT FOUND Exception을 반환한다.', async () => {
       // given
@@ -67,7 +67,7 @@ describe('All Exception Filter e2e Test', () => {
   });
 
   describe('Internal Server Error Exception', () => {
-    const url = () => `/test/internal-server-error`;
+    const url = () => `/v1/test/internal-server-error`;
 
     test('알 수 없는 HttpException이 반환되면 Internal Server Error Exception을 반환한다.', async () => {
       // given
