@@ -14,6 +14,7 @@ import { User } from '@domain/user/entity/user.entity';
 import { AuthController } from '@domain/auth/auth.controller';
 import * as bcrypt from 'bcrypt';
 import { LoginGuardResponse } from '@domain/auth/dto/response/login-guard.response';
+import { UserNotFoundException } from '@domain/auth/exception/user-not-found.exception';
 
 const mockAuthConfigService = {
   saltRounds: 10,
@@ -125,6 +126,20 @@ describe('AuthService Unit Test', () => {
       // then
       expect(result.id).toBe(id);
       expect(result.username).toBe(username);
+    });
+
+    test('유저가 존재하지 않는 경우, UserNotFoundException가 발생한다.', async () => {
+      // given
+      const username = 'test';
+      const password = '1234';
+
+      // when
+      jest.spyOn(userService, 'findUser').mockResolvedValue(null);
+
+      // then
+      await expect(async () => {
+        return await authService.validateUser(username, password);
+      }).rejects.toThrowError(new UserNotFoundException());
     });
   });
 });
