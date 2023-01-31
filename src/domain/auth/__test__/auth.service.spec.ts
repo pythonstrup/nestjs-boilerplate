@@ -5,7 +5,7 @@ import { AuthService } from '@domain/auth/auth.service';
 import { UserService } from '@domain/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
-import { getUserFixture } from '@domain/user/spec/user.fixture';
+import { getUserFixture } from '@domain/user/__test__/user.fixture';
 import { DuplicatedUsernameException } from '@domain/auth/exception/duplicated-username.exception';
 import { SignUpServiceDto } from '@domain/auth/dto/service/sign-up.service-dto';
 import { UserRepository } from '@domain/user/user.repository';
@@ -76,7 +76,7 @@ describe('AuthService Unit Test', () => {
       const request = SignUpServiceDto.create({ username, password });
 
       // when
-      jest.spyOn(userService, 'findUser').mockResolvedValue(null);
+      jest.spyOn(userService, 'findUserByUsername').mockResolvedValue(null);
       jest.spyOn(userService, 'createUser').mockResolvedValue(user);
       const result = await authService.signUp(request);
 
@@ -94,7 +94,7 @@ describe('AuthService Unit Test', () => {
       const request = SignUpServiceDto.create({ username, password });
 
       // when
-      jest.spyOn(userService, 'findUser').mockResolvedValue(user);
+      jest.spyOn(userService, 'findUserByUsername').mockResolvedValue(user);
 
       // then
       await expect(async () => {
@@ -118,7 +118,7 @@ describe('AuthService Unit Test', () => {
       });
 
       // when
-      jest.spyOn(userService, 'findUser').mockResolvedValue(user);
+      jest.spyOn(userService, 'findUserByUsername').mockResolvedValue(user);
       const result: LoginGuardResponse = await authService.validateUser(
         username,
         password,
@@ -135,7 +135,7 @@ describe('AuthService Unit Test', () => {
       const password = '1234';
 
       // when
-      jest.spyOn(userService, 'findUser').mockResolvedValue(null);
+      jest.spyOn(userService, 'findUserByUsername').mockResolvedValue(null);
 
       // then
       await expect(async () => {
@@ -158,7 +158,7 @@ describe('AuthService Unit Test', () => {
       });
 
       // when
-      jest.spyOn(userService, 'findUser').mockResolvedValue(user);
+      jest.spyOn(userService, 'findUserByUsername').mockResolvedValue(user);
 
       // then
       await expect(async () => {
