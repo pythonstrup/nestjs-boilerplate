@@ -32,7 +32,9 @@ export class AuthService {
   ) {}
 
   async signUp(signupDto: SignUpServiceDto) {
-    const result = await this.userService.findUser(signupDto.username);
+    const result = await this.userService.findUserByUsername(
+      signupDto.username,
+    );
     if (result) {
       throw new DuplicatedUsernameException();
     }
@@ -44,7 +46,7 @@ export class AuthService {
   }
 
   async validateUser(username: string, password: string) {
-    const user = await this.userService.findUser(username);
+    const user = await this.userService.findUserByUsername(username);
     if (!user) {
       throw new UserNotFoundException();
     }
